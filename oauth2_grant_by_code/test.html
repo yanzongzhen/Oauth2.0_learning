@@ -4,33 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>数据资源管理</title>
+    <title>获取token</title>
     <style>
-
+        div {
+            text-align: center
+        }
+        .tokens {
+            margin-top: 20px;
+        }
+        a {
+            text-decoration: none;
+            font-size: 26px;
+            color: skyblue;
+        }
+        span {
+            font-size: 20px;
+            color: grey;
+        }
     </style>
 </head>
 <body>
-    <table width="40%" align="center" border="solid">
-        <tr align="center">
-            <th>时间</th>
-            <th>数据</th>
-            <th>操作</th>
-        </tr>
-        <tr align="center">
-            <td>2018.05.09</td>
-            <td>啦啦啦啦</td>
-            <td>del</td>
-        </tr>
-        <tr align="center">
-            <td>2018.05.09</td>
-            <td>啦啦啦啦</td>
-            <td>del</td>
-        </tr>
-        <tr align="center">
-            <td>2018.05.09</td>
-            <td>啦啦啦啦</td>
-            <td>del</td>
-        </tr>
-    </table>
+    <div class="container">
+        <div class="tokens" >
+            <span>您的Token:</span><span>{{token}}</span>
+        </div>
+        <div class="links">
+            <a href="/data?token={{token}}">获取数据</a>
+        </div>
+    </div>
 </body>
 </html>

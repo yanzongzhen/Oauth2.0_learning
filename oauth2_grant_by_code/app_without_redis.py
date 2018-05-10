@@ -2,10 +2,6 @@ import base64
 import random
 import time
 from flask import Flask, request, redirect
-import redis
-
-conn = redis.Redis(host='localhost', port=6379, decode_responses=True)
-
 
 app = Flask(__name__)
 
@@ -15,12 +11,12 @@ client_id = '123456'
 redirect_uri = host + '/client/passport'
 auth_redirect_uri = []
 auth_code = {}
-
+users = {}
 
 def gen_token(uid):
     token = base64.b64encode(
         (':'.join([str(uid), str(random.random()), str(time.time() + 7200)])).encode())
-    conn.set(uid,token)
+    users[uid] = token
     return token
 
 
@@ -32,12 +28,13 @@ def gen_auth_code(uri):
 
 def verify_token(token):
     _token = base64.b64decode(token).decode()
-    if conn.get(_token.split(':')[0]) == token.encode():
+    if users.get(_token.split(':')[0]) == token.encode():
         return 1
     if float(_token.split(':')[-1]) >= time.time():
         return 1
     else:
         return 0
+
 
 @app.route('/',methods=['POST', 'GET'])
 def index():
@@ -67,7 +64,6 @@ def index():
         </html>  
     """
     return html
-
 
 
 @app.route('/client', methods=['POST', 'GET'])
@@ -157,6 +153,7 @@ def oauth():
                          ) == request.args.get('redirect_uri'):
             token = gen_token(int(request.args.get('client_id')))
             return html % (token.decode(),token.decode())
+
 
 @app.route('/client/passport', methods=['POST', 'GET'])
 def client_passport():
